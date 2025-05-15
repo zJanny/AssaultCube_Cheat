@@ -11,28 +11,27 @@
 namespace UI
 {
 
-	typedef void(APIENTRY* glDrawElements_t)(GLenum mode, GLsizei count, GLenum type, const void* indices);
-	glDrawElements_t o_glDrawElements = nullptr;
+	typedef BOOL(__stdcall* wglSwapBuffers_t) (HDC hDc);
+	wglSwapBuffers_t o_wglSwapBuffers = nullptr;
 	bool imgui_initialized = false;
 
-	void APIENTRY hk_glDrawElements(GLenum mode, GLsizei count, GLenum type, const void* indices) 
+	void initImGUI(HDC hDc)
+	{
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO();
+		ImGui::StyleColorsDark();
+
+		ImGui_ImplWin32_Init(WindowFromDC(hDc));
+		ImGui_ImplOpenGL2_Init();
+
+		std::cout << "Initialized ImGUI" << std::endl;
+	}
+
+	BOOL WINAPI hk_wglSwapBuffers(HDC hDc)
 	{
 		if (!imgui_initialized)
 		{
-			ImGui::CreateContext();
-			ImGuiIO& io = ImGui::GetIO();
-			ImGui::StyleColorsDark();
-
-			ImGui_ImplOpenGL2_Init();
-			HDC hdc = wglGetCurrentDC();
-			HWND hwnd = WindowFromDC(hdc);
-			if (hwnd == NULL)
-			{
-				std::cerr << "Failed to retrieve HWND from HDC." << std::endl;
-				return;
-			}
-			ImGui_ImplWin32_Init(hwnd);
-
+			initImGUI(hDc);
 			imgui_initialized = true;
 		}
 
@@ -47,7 +46,7 @@ namespace UI
 		ImGui::Render();
 		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
-		return o_glDrawElements(mode, count, type, indices);
+		return o_wglSwapBuffers(hDc);
 	}
 
 	void initKiero()
@@ -60,7 +59,7 @@ namespace UI
 
 		std::cout << "Kiero init successful" << std::endl;
 
-		if (kiero::bind(67, (void**)&o_glDrawElements, hk_glDrawElements) != kiero::Status::Success)
+		if (kiero::bind(336, (void**)&o_wglSwapBuffers, hk_wglSwapBuffers) != kiero::Status::Success)
 		{
 			std::cout << "Error on kiero bind" << std::endl;
 			return;
