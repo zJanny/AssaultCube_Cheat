@@ -19,7 +19,7 @@ namespace cheat
 		uintptr_t baseAddr = reinterpret_cast<uintptr_t>(GetModuleHandle(NULL));
 
 		openConsole();
-		UI::initKiero();
+		UI::initUI();
 
 		std::cout << "Cheat injected" << std::endl;
 		std::cout << "Base address " << std::hex << baseAddr << std::dec << std::endl;

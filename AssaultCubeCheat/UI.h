@@ -2,5 +2,5 @@
 
 namespace UI
 {
-	void initKiero();
+	void initUI();
 }
