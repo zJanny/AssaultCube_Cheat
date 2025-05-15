@@ -71,8 +71,9 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\kiero\minhook\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\kiero\minhook\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\minhook\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\kiero;D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\minhook\include;$(IncludePath)</IncludePath>
+    <SourcePath>D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\kiero;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

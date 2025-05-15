@@ -33,11 +33,11 @@
     <ClCompile Include="memory.cpp">
       <Filter>Source Files\cheat</Filter>
     </ClCompile>
-    <ClCompile Include="kiero\kiero.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI.cpp">
       <Filter>Source Files\cheat\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="kiero\kiero.cpp">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

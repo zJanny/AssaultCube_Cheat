@@ -1,0 +1,6 @@
+[submodule "AssaultCubeCheat/kiero"]
+	path = AssaultCubeCheat/kiero
+	url = https://github.com/Rebzzel/kiero.git
+[submodule "AssaultCubeCheat/imgui"]
+	path = AssaultCubeCheat/imgui
+	url = https://github.com/ocornut/imgui.git
