@@ -25,18 +25,18 @@ namespace ESP
 
 		clipCoords.x = pos.x * matrix[0] + pos.y * matrix[4] + pos.z * matrix[8] + matrix[12];
 		clipCoords.y = pos.x * matrix[1] + pos.y * matrix[5] + pos.z * matrix[9] + matrix[13];
-		clipCoords.z = pos.x * matrix[2] + pos.y * matrix[6] + pos.z * matrix[10] + matrix[14];
-		clipCoords.w = pos.x * matrix[3] + pos.y * matrix[7] + pos.z * matrix[11] + matrix[15];
+		clipCoords.width = pos.x * matrix[2] + pos.y * matrix[6] + pos.z * matrix[10] + matrix[14];
+		clipCoords.height = pos.x * matrix[3] + pos.y * matrix[7] + pos.z * matrix[11] + matrix[15];
 
-		if (clipCoords.w < 0.1f)
+		if (clipCoords.height < 0.1f)
 		{
 			return false;
 		}
 
 		Vector3 NDC;
-		NDC.x = clipCoords.x / clipCoords.w;
-		NDC.y = clipCoords.y / clipCoords.w;
-		NDC.z = clipCoords.z / clipCoords.w;
+		NDC.x = clipCoords.x / clipCoords.height;
+		NDC.y = clipCoords.y / clipCoords.height;
+		NDC.z = clipCoords.width / clipCoords.height;
 
 		screen.x = view[0] + (NDC.x * 0.5f + 0.5f) * view[2];
 		screen.y = view[1] + (NDC.y * 0.5f + 0.5f) * view[3];
@@ -46,10 +46,34 @@ namespace ESP
 
 	void drawESPBox(Player* player)
 	{
-		Vector2 position = Vector2();
-		if (!worldToScreen(player->location, position)) return;
+		Vector2 pos = Vector2();
+		if (!worldToScreen(player->location, pos)) return;
 
+		Vector3 headPos = Vector3(player->location.x, player->location.y, player->location.z);
+		headPos.z += 0.8f;
+
+		Vector3 feetPos = Vector3(headPos.x, headPos.y, headPos.z);
+		feetPos.z -= player->eyeHeight;
+
+		Vector2 screenHead = Vector2();
+		Vector2 screenFeet = Vector2();
+
+		worldToScreen(headPos, screenHead);
+		worldToScreen(feetPos, screenFeet);
+
+		float distance = screenHead.distance(screenFeet) * 1.2f;
+		Vector4 rectBox = Vector4(screenHead.x - (distance / 4.0f), screenHead.y, distance / 2.0f, distance);
+
+		glLineWidth(1.0f);
+		glBegin(GL_LINE_STRIP);
+		glColor3ub(255, 0 ,0);
+		glVertex2f(rectBox.x - 0.5f, rectBox.y - 0.5f);
+		glVertex2f(rectBox.x + rectBox.width + 0.5f, rectBox.y - 0.5f);
+		glVertex2f(rectBox.x + rectBox.width + 0.5f, rectBox.y + rectBox.height + 0.5f);
+		glVertex2f(rectBox.x - 0.5f, rectBox.y + rectBox.height + 0.5f);
+		glVertex2f(rectBox.x - 0.5f, rectBox.y - 0.5f);
 		glEnd();
+
 	}
 
 	void runESP()
