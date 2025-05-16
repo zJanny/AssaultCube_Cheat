@@ -38,10 +38,31 @@ namespace ESP
 		NDC.y = clipCoords.y / clipCoords.height;
 		NDC.z = clipCoords.width / clipCoords.height;
 
-		screen.x = view[0] + (NDC.x * 0.5f + 0.5f) * view[2];
-		screen.y = view[1] + (NDC.y * 0.5f + 0.5f) * view[3];
+		screen.x = (view[2] / 2 * NDC.x) + (NDC.x + view[2] / 2);
+		screen.y = -(view[3] / 2 * NDC.y) + (NDC.y + view[3] / 2);
 
 		return true;
+	}
+
+	void setupOpenGLForDrawing()
+	{
+		GLint viewport[4];
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
+		glPushMatrix();
+		glGetIntegerv(GL_VIEWPORT, viewport);
+		glViewport(0, 0, viewport[2], viewport[3]);
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(0, viewport[2], viewport[3], 0, -1, 1);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		glDisable(GL_DEPTH_TEST);
+	}
+
+	void restoreGLState()
+	{
+		glPopMatrix();
+		glPopAttrib();
 	}
 
 	void drawESPBox(Player* player)
@@ -64,6 +85,8 @@ namespace ESP
 		float distance = screenHead.distance(screenFeet) * 1.2f;
 		Vector4 rectBox = Vector4(screenHead.x - (distance / 4.0f), screenHead.y, distance / 2.0f, distance);
 
+		setupOpenGLForDrawing();
+
 		glLineWidth(1.0f);
 		glBegin(GL_LINE_STRIP);
 		glColor3ub(255, 0 ,0);
@@ -74,6 +97,7 @@ namespace ESP
 		glVertex2f(rectBox.x - 0.5f, rectBox.y - 0.5f);
 		glEnd();
 
+		restoreGLState();
 	}
 
 	void runESP()
