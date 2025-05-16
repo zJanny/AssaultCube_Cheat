@@ -31,11 +31,11 @@ namespace cheat
 			int playerCount = *(int*)(memory::getMemoryAddrFromPointer(offsets::playerCount, {}));
 			PlayerList* playerList = *(PlayerList**)(memory::getMemoryAddrFromPointer(offsets::playerList, 0));
 
-            for(int i = 0; i < playerCount; i++)
-           	{
-            	Player* player = playerList->players[i];
-                std::cout << "Player " << i << " health: " << player->health << std::endl;
-            }
+            		for(int i = 0; i < playerCount; i++)
+           		{
+            			Player* player = playerList->players[i];
+                		std::cout << "Player " << i << " health: " << player->health << std::endl;
+            		}
 
 			Sleep(500);
 		}

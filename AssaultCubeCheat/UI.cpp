@@ -27,12 +27,12 @@ namespace UI
 		std::cout << "Initialized ImGUI" << std::endl;
 	}
 
-    void drawUI()
-    {
+    	void drawUI()
+    	{
 		ImGui::Begin("Overlay");
 		ImGui::Text("Hello from ImGui!");
 		ImGui::End();
-    }
+    	}
 
 	BOOL WINAPI hk_wglSwapBuffers(HDC hDc)
 	{
