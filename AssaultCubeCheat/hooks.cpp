@@ -4,6 +4,8 @@
 #include "imgui/backends/imgui_impl_win32.h"
 #include "imgui/backends/imgui_impl_opengl2.h"
 #include <kiero.h>
+#include <SDL.h>
+#include <MinHook.h>
 
 #include "UI.h"
 #include "hooks.h"
@@ -18,15 +20,16 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(
 namespace hooks
 {
 	typedef BOOL(__stdcall* wglSwapBuffers_t) (HDC hDc);
+	typedef int (SDLCALL* SDL_PollEvent_t)(SDL_Event*);
 	WNDPROC oWndProc;
+	SDL_PollEvent_t fpOriginalSDL_PollEvent = nullptr;
 	wglSwapBuffers_t o_wglSwapBuffers = nullptr;
 	bool imgui_initialized = false;
 
 	LRESULT CALLBACK hWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-		ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
-
-		if (UI::shouldDrawUI) {
-			return 0;
+		if (UI::shouldDrawUI)
+		{
+			ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 		}
 
 		return CallWindowProc(oWndProc, hWnd, msg, wParam, lParam);
@@ -41,6 +44,7 @@ namespace hooks
 		HWND hwnd = WindowFromDC(hDc);
 
 		oWndProc = (WNDPROC)SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG_PTR)hWndProc);
+
 		ImGui_ImplWin32_Init(hwnd);
 		ImGui_ImplOpenGL2_Init();
 
@@ -55,8 +59,8 @@ namespace hooks
 			imgui_initialized = true;
 		}
 
-		ImGui_ImplOpenGL2_NewFrame();
 		ImGui_ImplWin32_NewFrame();
+		ImGui_ImplOpenGL2_NewFrame();
 		ImGui::NewFrame();
 
 		UI::drawUI();
@@ -87,9 +91,35 @@ namespace hooks
 		std::cout << "Kiero bind successful" << std::endl;
 	}
 
+	int SDLCALL Hooked_SDL_PollEvent(SDL_Event* event)
+	{
+		int response = fpOriginalSDL_PollEvent(event);
+
+		if (UI::shouldDrawUI)
+		{
+			return 0;
+		}
+
+		return response;
+	}
+
+	void initSDLHooks()
+	{
+		HMODULE hSDL = GetModuleHandleA("SDL2.dll");
+		if (hSDL == nullptr) throw std::runtime_error("Cant find SDL2.dll");
+
+		void* pSDL_PollEvent = GetProcAddress(hSDL, "SDL_PollEvent");
+
+		MH_STATUS status = MH_CreateHook(pSDL_PollEvent, &Hooked_SDL_PollEvent, reinterpret_cast<LPVOID*>(&fpOriginalSDL_PollEvent));
+		std::cout << "Create SDL_PollEvent hook status " << status << std::endl;
+
+		MH_EnableHook(pSDL_PollEvent);
+	}
+
 	void enableHooks()
 	{
 		initKiero();
+		initSDLHooks();
 
 		std::cout << "Hooks enabled" << std::endl;
 	}

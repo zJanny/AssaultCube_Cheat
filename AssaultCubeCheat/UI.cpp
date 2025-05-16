@@ -36,8 +36,7 @@ namespace UI
 
 		if (!shouldDrawUI) return;
 
-		ImGui::Begin("Overlay");
-		ImGui::Text("Hello from ImGui!");
+		ImGui::Begin("AssaultCube Cheat");
 		ImGui::End();
     }
 }
