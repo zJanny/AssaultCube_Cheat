@@ -27,6 +27,13 @@ namespace UI
 		std::cout << "Initialized ImGUI" << std::endl;
 	}
 
+    void drawUI()
+    {
+		ImGui::Begin("Overlay");
+		ImGui::Text("Hello from ImGui!");
+		ImGui::End();
+    }
+
 	BOOL WINAPI hk_wglSwapBuffers(HDC hDc)
 	{
 		if (!imgui_initialized)
@@ -39,9 +46,7 @@ namespace UI
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		ImGui::Begin("Overlay");
-		ImGui::Text("Hello from ImGui!");
-		ImGui::End();
+		drawUI();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());

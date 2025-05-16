@@ -28,13 +28,14 @@ namespace cheat
 
 		while (true)
 		{
-			int playerCount = *(int*)(memory::getMemoryAddrFromPointer(0x18AC0C, {}));
-			for (int i = 1; i < playerCount; i++) 
-			{
-				Player* currentPlayer = *(Player**)(memory::getMemoryAddrFromPointer(offsets::playerList, {(unsigned int)(i) * 4}));
-				std::cout << "PLAYER " << i << std::endl;
-				std::cout << "Health " << currentPlayer->health << std::endl; 
-			}
+			int playerCount = *(int*)(memory::getMemoryAddrFromPointer(offsets::playerCount, {}));
+			PlayerList* playerList = *(PlayerList**)(memory::getMemoryAddrFromPointer(offsets::playerList, 0));
+
+            for(int i = 0; i < playerCount; i++)
+           	{
+            	Player* player = playerList->players[i];
+                std::cout << "Player " << i << " health: " << player->health << std::endl;
+            }
 
 			Sleep(500);
 		}

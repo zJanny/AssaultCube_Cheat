@@ -19,3 +19,8 @@ public:
 	int32_t health; //0x00EC
 	char pad_00F0[336]; //0x00F0
 }; //Size: 0x0240
+
+struct PlayerList
+{
+	Player* players[32];
+};
