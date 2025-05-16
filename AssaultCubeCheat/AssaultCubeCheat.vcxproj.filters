@@ -19,9 +19,6 @@
     <Filter Include="Header Files\libraries">
       <UniqueIdentifier>{65ca242d-8312-4ceb-9e9e-ba7c4167aaaa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\cheat\ui">
-      <UniqueIdentifier>{a25a49fe-e7ae-4608-be80-383ae933e683}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -32,9 +29,6 @@
     </ClCompile>
     <ClCompile Include="memory.cpp">
       <Filter>Source Files\cheat</Filter>
-    </ClCompile>
-    <ClCompile Include="UI.cpp">
-      <Filter>Source Files\cheat\ui</Filter>
     </ClCompile>
     <ClCompile Include="kiero\kiero.cpp">
       <Filter>Resource Files</Filter>
@@ -57,6 +51,12 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="hooks.cpp">
+      <Filter>Source Files\cheat</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>Source Files\cheat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cheat.h">
@@ -75,6 +75,9 @@
       <Filter>Header Files\libraries</Filter>
     </ClInclude>
     <ClInclude Include="UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hooks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

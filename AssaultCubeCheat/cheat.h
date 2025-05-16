@@ -3,5 +3,5 @@
 
 namespace cheat
 {
-	void cheatThread();
+	void runCheat();
 }

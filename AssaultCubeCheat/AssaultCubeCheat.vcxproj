@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="cheat.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="hooks.cpp" />
     <ClCompile Include="imgui\backends\imgui_impl_opengl2.cpp" />
     <ClCompile Include="imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cheat.h" />
+    <ClInclude Include="hooks.h" />
     <ClInclude Include="kiero\kiero.h" />
     <ClInclude Include="memory.h" />
     <ClInclude Include="offsets.h" />

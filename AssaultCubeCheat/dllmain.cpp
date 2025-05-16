@@ -1,6 +1,20 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include <Windows.h>
+#include <iostream>
 #include "cheat.h"
+#include "hooks.h"
+
+void openConsole()
+{
+    AllocConsole();
+    freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
+}
+
+void startupThread()
+{
+    openConsole();
+    hooks::enableHooks();
+}
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -11,7 +25,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     {
     case DLL_PROCESS_ATTACH:
         DisableThreadLibraryCalls(hModule);
-        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)cheat::cheatThread, hModule, NULL, NULL);
+        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)startupThread, NULL, 0, NULL);
     case DLL_PROCESS_DETACH:
         break;
     }
