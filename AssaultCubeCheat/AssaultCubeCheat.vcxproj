@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\minhook\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\kiero;D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\minhook\include;D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\imgui;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\minhook\lib;D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\SDL\VisualC\Win32\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\kiero;D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\minhook\include;D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\SDL\include;D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\imgui;$(IncludePath)</IncludePath>
     <SourcePath>D:\Game Hacking\Projects\AssaultCubeCheat\AssaultCubeCheat\kiero;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -89,7 +89,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>libMinHook.x86.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libMinHook.x86.lib;opengl32.lib;glu32.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
