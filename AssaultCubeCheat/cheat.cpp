@@ -6,6 +6,9 @@ namespace cheat
 {
 	void runCheat()
 	{
-		ESP::runESP();
+		if (toggleESP)
+		{
+			ESP::runESP();
+		}
 	}
 }

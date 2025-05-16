@@ -64,6 +64,18 @@ namespace ESP
 		glPopAttrib();
 	}
 
+	GLubyte* convertColor(float colors[3])
+	{
+		GLubyte color[3];
+
+		for (int i = 0; i < 3; i++)
+		{
+			color[i] = static_cast<GLubyte>(colors[i] * 255.0f + 0.5f);
+		}
+
+		return color;
+	}
+
 	void drawESPBox(Player* player)
 	{
 		if (player == nullptr || player->health <= 0) return;
@@ -93,11 +105,13 @@ namespace ESP
 
 		if (memory::getLocalPlayer()->team == player->team)
 		{
-			glColor3ub(0, 0, 255);
+			GLubyte* color = convertColor(friendlyColor);
+			glColor3ub(color[0], color[1], color[2]);
 		}
 		else
 		{
-			glColor3ub(255, 0, 0);
+			GLubyte* color = convertColor(enemyColor);
+			glColor3ub(color[0], color[1], color[2]);
 		}
 
 		glVertex2f(rectBox.x - 0.5f, rectBox.y - 0.5f);
