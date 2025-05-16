@@ -9,11 +9,28 @@
 #include "hooks.h"
 #include "cheat.h"
 
+extern LRESULT ImGui_ImplWin32_WndProcHandler(
+	HWND hWnd,
+	UINT msg,
+	WPARAM wParam,
+	LPARAM lParam);
+
 namespace hooks
 {
 	typedef BOOL(__stdcall* wglSwapBuffers_t) (HDC hDc);
+	WNDPROC oWndProc;
 	wglSwapBuffers_t o_wglSwapBuffers = nullptr;
 	bool imgui_initialized = false;
+
+	LRESULT CALLBACK hWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+		ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
+
+		if (UI::shouldDrawUI) {
+			return 0;
+		}
+
+		return CallWindowProc(oWndProc, hWnd, msg, wParam, lParam);
+	}
 
 	void initImGUI(HDC hDc)
 	{
@@ -21,7 +38,10 @@ namespace hooks
 		ImGuiIO& io = ImGui::GetIO();
 		ImGui::StyleColorsDark();
 
-		ImGui_ImplWin32_Init(WindowFromDC(hDc));
+		HWND hwnd = WindowFromDC(hDc);
+
+		oWndProc = (WNDPROC)SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG_PTR)hWndProc);
+		ImGui_ImplWin32_Init(hwnd);
 		ImGui_ImplOpenGL2_Init();
 
 		std::cout << "Initialized ImGUI" << std::endl;

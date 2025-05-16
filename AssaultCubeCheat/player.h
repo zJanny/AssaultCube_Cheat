@@ -1,11 +1,7 @@
 #pragma once
+#include "helpers.h"
 
 // Created with ReClass.NET 1.2 by KN4CK3R
-
-struct Vector3
-{
-	float x, y, z;
-};
 
 class Player
 {

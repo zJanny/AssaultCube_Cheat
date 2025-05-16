@@ -3,4 +3,5 @@
 namespace UI
 {
 	void drawUI();
+	extern bool shouldDrawUI;
 }

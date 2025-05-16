@@ -10,12 +10,6 @@ void openConsole()
     freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 }
 
-void startupThread()
-{
-    openConsole();
-    hooks::enableHooks();
-}
-
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved
@@ -24,8 +18,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
-        DisableThreadLibraryCalls(hModule);
-        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)startupThread, NULL, 0, NULL);
+        openConsole();
+        hooks::enableHooks();
     case DLL_PROCESS_DETACH:
         break;
     }

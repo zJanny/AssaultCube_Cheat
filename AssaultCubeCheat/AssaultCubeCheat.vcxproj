@@ -160,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cheat.h" />
+    <ClInclude Include="helpers.h" />
     <ClInclude Include="hooks.h" />
     <ClInclude Include="kiero\kiero.h" />
     <ClInclude Include="memory.h" />
