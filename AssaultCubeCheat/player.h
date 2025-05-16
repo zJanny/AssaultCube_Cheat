@@ -16,5 +16,7 @@ public:
 	float eyeHeight; //0x0050
 	char pad_0054[152]; //0x0054
 	int32_t health; //0x00EC
-	char pad_00F0[336]; //0x00F0
-}; //Size: 0x0240
+	char pad_00F0[540]; //0x00F0
+	int32_t team; //0x030C
+	char pad_0310[48]; //0x0310
+}; //Size: 0x0340

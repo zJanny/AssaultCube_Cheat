@@ -1,7 +1,6 @@
 #include "ESP.h"
-#include "memory.h"
-#include "player.h"
 #include "offsets.h"
+#include "memory.h"
 
 #include <iostream>
 #include <Windows.h>
@@ -67,6 +66,8 @@ namespace ESP
 
 	void drawESPBox(Player* player)
 	{
+		if (player == nullptr || player->health <= 0) return;
+
 		Vector2 pos = Vector2();
 		if (!worldToScreen(player->location, pos)) return;
 
@@ -89,7 +90,16 @@ namespace ESP
 
 		glLineWidth(1.0f);
 		glBegin(GL_LINE_STRIP);
-		glColor3ub(255, 0 ,0);
+
+		if (memory::getLocalPlayer()->team == player->team)
+		{
+			glColor3ub(0, 0, 255);
+		}
+		else
+		{
+			glColor3ub(255, 0, 0);
+		}
+
 		glVertex2f(rectBox.x - 0.5f, rectBox.y - 0.5f);
 		glVertex2f(rectBox.x + rectBox.width + 0.5f, rectBox.y - 0.5f);
 		glVertex2f(rectBox.x + rectBox.width + 0.5f, rectBox.y + rectBox.height + 0.5f);
