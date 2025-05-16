@@ -1,6 +1,7 @@
 #include "cheat.h"
 #include "memory.h"
 #include "ESP.h"
+#include "aimbot.h"
 
 namespace cheat
 {
@@ -9,6 +10,11 @@ namespace cheat
 		if (toggleESP)
 		{
 			ESP::runESP();
+		}
+
+		if (toggleAimbot)
+		{
+			aimbot::runAimbot();
 		}
 	}
 }

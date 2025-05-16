@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#define PI 3.14159
 
 struct Vector4
 {
@@ -65,3 +66,22 @@ struct Vector2
 		return std::sqrt(dx * dx + dy * dy);
 	}
 };
+
+namespace helper
+{
+	inline Vector2 computeAngle(Vector3 src, Vector3 dst)
+	{
+		float dx = dst.x - src.x;
+		float dy = dst.y - src.y;
+		float dz = dst.z - src.z;
+
+		double yaw_rad = atan2f(dy, dx);
+		double yaw_deg = yaw_rad * (180.0 / PI);
+
+		double horiz_dist = sqrtf(dx * dx + dy * dy);
+		double pitch_rad = atan2f(dz, horiz_dist);
+		double pitch_deg = pitch_rad * (180.0 / PI);
+
+		return Vector2((float)yaw_deg + 90, (float)pitch_deg);
+	}
+}

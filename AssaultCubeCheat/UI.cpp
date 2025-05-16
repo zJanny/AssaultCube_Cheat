@@ -49,6 +49,13 @@ namespace UI
 			ImGui::EndTabItem();
 		}
 
+		if (ImGui::BeginTabItem("Combat"))
+		{
+			ImGui::Checkbox("Aimbot", &cheat::toggleAimbot);
+
+			ImGui::EndTabItem();
+		}
+
 		if (ImGui::BeginTabItem("Settings"))
 		{
 			ImGui::ColorPicker3("Friendly color", ESP::friendlyColor);

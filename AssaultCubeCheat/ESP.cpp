@@ -130,7 +130,6 @@ namespace ESP
 		for (int i = 1; i < playerCount; i++)
 		{
 			Player* player = *(Player**)memory::getMemoryAddrFromPointer(offsets::playerList, { (unsigned int)(i * 4) });
-
 			drawESPBox(player);
 		}
 	}

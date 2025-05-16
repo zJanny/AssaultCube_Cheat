@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="aimbot.cpp" />
     <ClCompile Include="cheat.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="ESP.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="aimbot.h" />
     <ClInclude Include="cheat.h" />
     <ClInclude Include="ESP.h" />
     <ClInclude Include="helpers.h" />
