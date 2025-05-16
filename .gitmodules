@@ -4,3 +4,7 @@
 [submodule "AssaultCubeCheat/imgui"]
 	path = AssaultCubeCheat/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "AssaultCubeCheat/SDL"]
+	path = AssaultCubeCheat/SDL
+	url = https://github.com/libsdl-org/SDL.git
+	branch = release-2.32.x
