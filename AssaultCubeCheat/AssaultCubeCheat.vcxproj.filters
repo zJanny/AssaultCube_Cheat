@@ -57,6 +57,9 @@
     <ClCompile Include="UI.cpp">
       <Filter>Source Files\cheat</Filter>
     </ClCompile>
+    <ClCompile Include="ESP.cpp">
+      <Filter>Source Files\cheat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cheat.h">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="helpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ESP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

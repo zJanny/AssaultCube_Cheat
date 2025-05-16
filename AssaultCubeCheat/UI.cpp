@@ -3,16 +3,10 @@
 #include <iostream>
 
 #include "imgui/imgui.h"
-#include "helpers.h"
 
 namespace UI
 {
 	bool shouldDrawUI = false;
-
-	void worldToScreen(const Vector3& world, Vector3& outScreen)
-	{
-
-	}
 
     void drawUI()
     {

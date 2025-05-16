@@ -88,7 +88,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>libMinHook.x86.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libMinHook.x86.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="cheat.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="ESP.cpp" />
     <ClCompile Include="hooks.cpp" />
     <ClCompile Include="imgui\backends\imgui_impl_opengl2.cpp" />
     <ClCompile Include="imgui\backends\imgui_impl_win32.cpp" />
@@ -160,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cheat.h" />
+    <ClInclude Include="ESP.h" />
     <ClInclude Include="helpers.h" />
     <ClInclude Include="hooks.h" />
     <ClInclude Include="kiero\kiero.h" />
