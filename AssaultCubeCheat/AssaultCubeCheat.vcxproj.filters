@@ -19,6 +19,12 @@
     <Filter Include="Header Files\libraries">
       <UniqueIdentifier>{65ca242d-8312-4ceb-9e9e-ba7c4167aaaa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\cheat\hacks">
+      <UniqueIdentifier>{2a2a2fb7-452a-4ccc-95d0-2c3c95ab26d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\cheat\graphics">
+      <UniqueIdentifier>{440d8375-b4c3-44a6-907d-e33a905c13ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -54,11 +60,17 @@
     <ClCompile Include="hooks.cpp">
       <Filter>Source Files\cheat</Filter>
     </ClCompile>
-    <ClCompile Include="UI.cpp">
-      <Filter>Source Files\cheat</Filter>
+    <ClCompile Include="aimbot.cpp">
+      <Filter>Source Files\cheat\hacks</Filter>
     </ClCompile>
     <ClCompile Include="ESP.cpp">
-      <Filter>Source Files\cheat</Filter>
+      <Filter>Source Files\cheat\hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="openglHelper.cpp">
+      <Filter>Source Files\cheat\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>Source Files\cheat\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +99,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ESP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="aimbot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openglHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

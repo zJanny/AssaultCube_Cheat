@@ -159,6 +159,7 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="kiero\kiero.cpp" />
     <ClCompile Include="memory.cpp" />
+    <ClCompile Include="openglHelper.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +171,7 @@
     <ClInclude Include="kiero\kiero.h" />
     <ClInclude Include="memory.h" />
     <ClInclude Include="offsets.h" />
+    <ClInclude Include="openglHelper.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>

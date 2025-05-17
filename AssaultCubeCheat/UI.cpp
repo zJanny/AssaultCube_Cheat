@@ -10,6 +10,7 @@
 namespace UI
 {
 	bool shouldDrawUI = false;
+	bool defaultValuesSet = false;
 
     void drawUI()
     {
@@ -39,6 +40,11 @@ namespace UI
 		if (!shouldDrawUI) return;
 
 		ImGui::Begin("AssaultCube Cheat");
+		if (!defaultValuesSet)
+		{
+			ImGui::SetWindowSize(ImVec2(500, 300));
+			defaultValuesSet = true;
+		}
 		
 		ImGui::BeginTabBar("1");
 

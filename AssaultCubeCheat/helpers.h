@@ -84,4 +84,9 @@ namespace helper
 
 		return Vector2((float)yaw_deg + 90, (float)pitch_deg);
 	}
+
+	inline float computeDistance(Vector3 src, Vector3 dst)
+	{
+
+	}
 }

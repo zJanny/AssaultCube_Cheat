@@ -10,6 +10,7 @@
 #include "UI.h"
 #include "hooks.h"
 #include "cheat.h"
+#include "aimbot.h"
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(
 	HWND hWnd,
@@ -94,6 +95,34 @@ namespace hooks
 	int SDLCALL Hooked_SDL_PollEvent(SDL_Event* event)
 	{
 		int response = fpOriginalSDL_PollEvent(event);
+
+		if (event->type == SDL_MOUSEBUTTONDOWN || event->type == SDL_MOUSEBUTTONUP)
+		{
+			if (cheat::toggleAimbot)
+			{
+				SDL_MouseButtonEvent mouseEvent = event->button;
+				if (mouseEvent.button == SDL_BUTTON_RIGHT)
+				{
+					if (mouseEvent.type == SDL_MOUSEBUTTONDOWN)
+					{
+						aimbot::shouldAim = true;
+					}
+
+					if (mouseEvent.type == SDL_MOUSEBUTTONUP)
+					{
+						aimbot::shouldAim = false;
+					}
+				}
+			}
+		}
+
+		if (event->type == SDL_MOUSEMOTION)
+		{
+			if (aimbot::getIsAimbotActive() && cheat::toggleAimbot)
+			{
+				event->motion = SDL_MouseMotionEvent();
+			}
+		}
 
 		if (UI::shouldDrawUI)
 		{
