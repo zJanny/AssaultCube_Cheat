@@ -15,16 +15,59 @@ namespace aimbot
 		return isAimbotActive;
 	}
 
+	Vector3 getShootLocationForPlayer(Player* player)
+	{
+		Vector3 shootLocation = Vector3(player->location.x, player->location.y, player->location.z);
+		shootLocation.z -= player->feetHeight;
+		
+		return shootLocation;
+	}
+
 	Player* findPlayerToTarget()
 	{
 		int playerCount = *(int*)(memory::getMemoryAddrFromPointer(offsets::playerCount, {}));
-		Player* target = nullptr;
+		Player* localPlayer = memory::getLocalPlayer();
+		std::vector<Player*> playersInsideFOV = {};
+
 		for (int i = 1; i < playerCount; i++)
 		{
-			target = *(Player**)memory::getMemoryAddrFromPointer(offsets::playerList, { (unsigned int)(i * 4) });
+			Player* current = *(Player**)memory::getMemoryAddrFromPointer(offsets::playerList, { (unsigned int)(i * 4) });
+			if (current->health <= 0 || current->team == localPlayer->team) continue;
+
+			Vector3 shootLocation = getShootLocationForPlayer(current);
+			Vector2 screenLocation = Vector2();
+
+			openGLHelper::worldToScreen(shootLocation, screenLocation);
+			if (openGLHelper::isInsideAimbotFov(screenLocation, aimbotFOV))
+			{
+				playersInsideFOV.push_back(current);
+			}
 		}
 
-		return target;
+		if (playersInsideFOV.size() == 1)
+		{
+			return playersInsideFOV[0];
+		}
+
+		if (playersInsideFOV.size() > 1)
+		{
+			float minDistance = 9999999999;
+			Player* closestPlayer = nullptr;
+
+			for (Player* player : playersInsideFOV)
+			{
+				float distance = helper::computeDistance(localPlayer->location, player->location);
+				if (distance < minDistance)
+				{
+					minDistance = distance;
+					closestPlayer = player;
+				}
+			}
+
+			return closestPlayer;
+		}
+
+		return nullptr;
 	}
 
 	void runAimbot()
@@ -36,23 +79,29 @@ namespace aimbot
 			openGLHelper::restoreGLState();
 		}
 
-		if (!shouldAim) return;
+		if (!shouldAim)
+		{
+			isAimbotActive = false;
+			return;
+		}
 
 		Player* localPlayer = memory::getLocalPlayer();
 		Player* target = findPlayerToTarget();
-		if (target == nullptr) return;
+		if (target == nullptr)
+		{
+			isAimbotActive = false;
+			return;
+		}
 
-		Vector3 shootLocation = Vector3(target->location.x, target->location.y, target->location.z);
-		shootLocation.z -= target->feetHeight;
+		Vector3 shootLocation = getShootLocationForPlayer(target);
 
 		Vector2 screenPosition = Vector2();
-		openGLHelper::worldToScreen(target->location, screenPosition);
-
-		if (!openGLHelper::isInsideAimbotFov(screenPosition, aimbotFOV)) return;
+		openGLHelper::worldToScreen(shootLocation, screenPosition);
 
 		Vector2 newLookDirection = helper::computeAngle(localPlayer->location, shootLocation);
 
 		localPlayer->yaw = newLookDirection.x;
 		localPlayer->pitch = newLookDirection.y;
+		isAimbotActive = true;
 	}
 }

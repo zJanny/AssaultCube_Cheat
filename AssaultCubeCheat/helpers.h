@@ -87,6 +87,6 @@ namespace helper
 
 	inline float computeDistance(Vector3 src, Vector3 dst)
 	{
-
+		return sqrt(pow(dst.x - src.x, 2) + pow(dst.y - src.y, 2) + pow(dst.z - src.z, 2));
 	}
 }
