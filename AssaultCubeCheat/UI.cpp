@@ -6,6 +6,7 @@
 #include "UI.h"
 #include "cheat.h"
 #include "ESP.h"
+#include "aimbot.h"
 
 namespace UI
 {
@@ -51,6 +52,7 @@ namespace UI
 		if (ImGui::BeginTabItem("Visuals"))
 		{
 			ImGui::Checkbox("ESP", &cheat::toggleESP);
+			ImGui::Checkbox("Draw friendlies", &ESP::drawFriendlies);
 
 			ImGui::EndTabItem();
 		}
@@ -58,6 +60,8 @@ namespace UI
 		if (ImGui::BeginTabItem("Combat"))
 		{
 			ImGui::Checkbox("Aimbot", &cheat::toggleAimbot);
+			ImGui::SliderFloat("Aimbot FOV", &aimbot::aimbotFOV, 1, 360);
+			ImGui::Checkbox("Draw FOV circle", &aimbot::drawFOVCircle);
 
 			ImGui::EndTabItem();
 		}

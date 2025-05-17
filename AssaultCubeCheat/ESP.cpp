@@ -33,6 +33,7 @@ namespace ESP
 		if (memory::getLocalPlayer()->team == player->team)
 		{
 			color = friendlyColor;
+			if (!drawFriendlies) return;
 		}
 		else
 		{
