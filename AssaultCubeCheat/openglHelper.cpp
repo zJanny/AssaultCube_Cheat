@@ -162,7 +162,19 @@ namespace openGLHelper
 		glBegin(GL_QUADS);
 		if (healthPercent == 1) healthPercent == 0.99999f;
 
-		glColor3ub(255.0f / (1.0f - healthPercent), 255.0f / healthPercent, 0.0f);
+		GLubyte r, g;
+		if (healthPercent >= 0.5f) {
+			float t = (healthPercent - 0.5f) / 0.5f;
+			r = (GLubyte)((1.0f - t) * 255.0f);
+			g = 255;
+		}
+		else {
+			float t = healthPercent / 0.5f;
+			r = 255;
+			g = (GLubyte)(t * 255.0f);
+		}
+
+		glColor3ub(r, g, 0.0f);
 		glVertex2f(barX, barY + barH);
 		glVertex2f(barX + barWidth, barY + barH);
 		glVertex2f(barX + barWidth, filledY);
