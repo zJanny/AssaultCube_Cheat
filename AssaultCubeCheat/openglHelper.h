@@ -7,7 +7,7 @@ namespace openGLHelper
 	void restoreGLState();
 	void drawFOVCircle(float posX);
 	bool worldToScreen(Vector3 pos, Vector2& screen);
-	void drawBox(Vector4 rectBox, float* color);
+	void drawBox(Vector4 rectBox, float* color, float playerHealth);
 	bool isInsideAimbotFov(Vector2 pos, float radius);
 	uint32_t buildHashForTexture(const void* data, std::size_t len, int textureID);
 	uint32_t getHashForTexture(int textureID);

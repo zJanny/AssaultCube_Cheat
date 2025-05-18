@@ -145,7 +145,44 @@ namespace openGLHelper
 		}
 	}
 
-	void drawBox(Vector4 rectBox, float* color)
+	void drawHealthBar(const Vector4& rectBox, float healthPercent)
+	{
+		const float barWidth = 5.0f;
+		const float margin = 2.0f;
+
+		float barX = rectBox.x - margin - barWidth;
+		float barY = rectBox.y;
+		float barH = rectBox.height;
+		float filledH = barH * healthPercent;
+		float filledY = barY + (barH - filledH);
+
+		glDisable(GL_CULL_FACE);
+		glDepthMask(GL_FALSE);
+
+		glBegin(GL_QUADS);
+		if (healthPercent == 1) healthPercent == 0.99999f;
+
+		glColor3ub(255.0f / (1.0f - healthPercent), 255.0f / healthPercent, 0.0f);
+		glVertex2f(barX, barY + barH);
+		glVertex2f(barX + barWidth, barY + barH);
+		glVertex2f(barX + barWidth, filledY);
+		glVertex2f(barX, filledY);
+		glEnd();
+
+		glDepthMask(GL_TRUE);
+		glEnable(GL_DEPTH_TEST);
+
+		glLineWidth(1.0f);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glBegin(GL_LINE_LOOP);
+		glVertex2f(barX, barY);
+		glVertex2f(barX + barWidth, barY);
+		glVertex2f(barX + barWidth, barY + barH);
+		glVertex2f(barX, barY + barH);
+		glEnd();
+	}
+
+	void drawBox(Vector4 rectBox, float* color, float playerHealth)
 	{
 		openGLHelper::setupOpenGLForDrawing();
 		int gluColor[3] = { 0, 0, 0 };
@@ -161,6 +198,8 @@ namespace openGLHelper
 		glVertex2f(rectBox.x - 0.5f, rectBox.y + rectBox.height + 0.5f);
 		glVertex2f(rectBox.x - 0.5f, rectBox.y - 0.5f);
 		glEnd();
+
+		drawHealthBar(rectBox, playerHealth);
 
 		openGLHelper::restoreGLState();
 	}

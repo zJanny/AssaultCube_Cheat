@@ -40,7 +40,7 @@ namespace ESP
 			color = enemyColor;
 		}
 
-		openGLHelper::drawBox(rectBox, color);
+		openGLHelper::drawBox(rectBox, color, player->health / 100.f);
 	}
 
 	void runESP()
