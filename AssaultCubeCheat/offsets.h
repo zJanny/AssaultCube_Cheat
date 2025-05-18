@@ -8,9 +8,6 @@ namespace offsets
 	inline uintptr_t playerCount = 0x18AC0C;
 	inline uintptr_t projectionMatrix = 0x57DFD0;
 	inline uintptr_t hasDRE = 0x57e148;
-	inline uintptr_t rendermodel = 0x463ad0;
-	inline uintptr_t isOccluded = 0x4bac10;
-	inline uintptr_t loadmodel = 0x4658f0;
 
 	inline const char* rendermodelSignature = "\x83\xEC\x24\x83\x3D\x9C\xAA\x58\x00\x00\x8B\xC2\x53\x8B\x5C\x24\x4C\x55\x8B";
 	inline const char* renderModuleMask = "xxxxxxxx??xxxxxxxxx";
