@@ -7,6 +7,7 @@
 #include "cheat.h"
 #include "ESP.h"
 #include "aimbot.h"
+#include "hooks.h"
 
 namespace UI
 {
@@ -53,6 +54,7 @@ namespace UI
 		{
 			ImGui::Checkbox("ESP", &cheat::toggleESP);
 			ImGui::Checkbox("Draw friendlies", &ESP::drawFriendlies);
+			ImGui::Checkbox("Weapon chams", &hooks::weaponChams);
 
 			ImGui::EndTabItem();
 		}

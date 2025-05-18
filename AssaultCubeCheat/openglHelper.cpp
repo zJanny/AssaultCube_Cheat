@@ -3,11 +3,14 @@
 #include "player.h"
 #include "offsets.h"
 
+#include <cstdint>
+#include <cstddef>
 #include <Windows.h>
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include <corecrt_math.h>
 #include <iostream>
+#include <map>
 
 namespace openGLHelper
 {
@@ -39,6 +42,45 @@ namespace openGLHelper
 		float dy = pos.y - centerY;
 
 		return (dx * dx + dy * dy) <= (radius * radius);
+	}
+
+	uint32_t fnv1a_hash32(const void* data, std::size_t len) {
+		const uint8_t* bytes = reinterpret_cast<const uint8_t*>(data);
+		uint32_t hash = 2166136261u; // 32-bit FNV offset basis
+		constexpr uint32_t prime = 16777619u; // 32-bit FNV prime
+
+		for (std::size_t i = 0; i < len; ++i) {
+			hash ^= bytes[i];
+			hash *= prime;
+		}
+		return hash;
+	}
+
+	std::map<int, uint32_t> alreadyComputedHashes;
+
+	bool alreadyHasHashForTexture(int textureID)
+	{
+		return alreadyComputedHashes.count(textureID);
+	}
+
+	uint32_t getHashForTexture(int textureID)
+	{
+		return alreadyComputedHashes[textureID];
+	}
+
+	uint32_t buildHashForTexture(const void* data, std::size_t len, int textureID)
+	{
+		if (!alreadyHasHashForTexture(textureID))
+		{
+			uint32_t hash = fnv1a_hash32(data, len);
+			alreadyComputedHashes[textureID] = hash;
+
+			return hash;
+		}
+		else
+		{
+			return alreadyComputedHashes[textureID];
+		}
 	}
 
 	void drawFOVCircle(float radius)
