@@ -32,6 +32,7 @@ namespace aimbot
 		for (int i = 1; i < playerCount; i++)
 		{
 			Player* current = *(Player**)memory::getMemoryAddrFromPointer(offsets::playerList, { (unsigned int)(i * 4) });
+			if (current == nullptr) continue;
 			if (current->health <= 0 || current->team == localPlayer->team) continue;
 
 			Vector3 shootLocation = getShootLocationForPlayer(current);
