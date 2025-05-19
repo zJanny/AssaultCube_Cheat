@@ -63,6 +63,7 @@ namespace UI
 		if (ImGui::BeginTabItem("Combat"))
 		{
 			ImGui::Checkbox("Aimbot", &cheat::toggleAimbot);
+			ImGui::Checkbox("Target head", &aimbot::targetHead);
 			ImGui::SliderFloat("Aimbot FOV", &aimbot::aimbotFOV, 1, 360);
 			ImGui::Checkbox("Draw FOV circle", &aimbot::drawFOVCircle);
 

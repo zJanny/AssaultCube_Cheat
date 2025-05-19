@@ -18,7 +18,10 @@ namespace aimbot
 	Vector3 getShootLocationForPlayer(Player* player)
 	{
 		Vector3 shootLocation = Vector3(player->location.x, player->location.y, player->location.z);
-		shootLocation.z -= player->feetHeight;
+		if (!targetHead)
+		{
+			shootLocation.z -= player->feetHeight;
+		}
 		
 		return shootLocation;
 	}
