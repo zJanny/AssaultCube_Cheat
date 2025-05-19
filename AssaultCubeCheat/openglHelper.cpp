@@ -216,6 +216,19 @@ namespace openGLHelper
 		openGLHelper::restoreGLState();
 	}
 
+	void makeWeaponChamsTexture()
+	{
+		int gluColor[3] = { 0, 0, 0 };
+		openGLHelper::convertColor(weaponChamsColor, gluColor);
+
+		glGenTextures(1, &weaponChamsTexture);
+		glBindTexture(GL_TEXTURE_2D, weaponChamsTexture);
+		GLubyte pixel[4] = { gluColor[0], gluColor[1], gluColor[2], 255 };
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	}
+
 	void restoreGLState()
 	{
 		glPopMatrix();

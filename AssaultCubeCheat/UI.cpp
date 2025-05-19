@@ -8,6 +8,7 @@
 #include "ESP.h"
 #include "aimbot.h"
 #include "hooks.h"
+#include "openglHelper.h"
 
 namespace UI
 {
@@ -72,6 +73,10 @@ namespace UI
 		{
 			ImGui::ColorPicker3("Friendly color", ESP::friendlyColor);
 			ImGui::ColorPicker3("Enemy color", ESP::enemyColor);
+			if (ImGui::ColorPicker3("Weapon chams color", openGLHelper::weaponChamsColor))
+			{
+				openGLHelper::makeWeaponChamsTexture();
+			}
 
 			ImGui::EndTabItem();
 		}

@@ -34,15 +34,18 @@ namespace hooks
 	typedef int (SDLCALL* SDL_PollEvent_t)(SDL_Event*);
 	typedef void(APIENTRY* glBindTexture_t)(GLenum, GLuint);
 	typedef void(APIENTRY* glDrawElements_t)(GLenum, GLsizei, GLenum, const void*);
+	typedef int(__vectorcall* isoccluded_t)(float, float, float, float, float);
 
 	SDL_PollEvent_t fpOriginalSDL_PollEvent = nullptr;
 	wglSwapBuffers_t o_wglSwapBuffers = nullptr;
 	glBindTexture_t o_glBindTexture = nullptr;
 	glDrawElements_t o_glDrawElements = nullptr;
+	isoccluded_t o_isOccluded = nullptr;
+	void* o_rendermodel = nullptr;
 
 	WNDPROC oWndProc;
 	bool imgui_initialized = false;
-	bool applyChams = false;
+	bool applyPlayerChams = false;
 
 	LRESULT CALLBACK hWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		if (UI::shouldDrawUI)
@@ -69,11 +72,67 @@ namespace hooks
 		std::cout << "Initialized ImGUI" << std::endl;
 	}
 
+	void applyChams(const char* mdl)
+	{
+		if (strcmp(mdl, "playermodels") == 0)
+		{
+			glPushAttrib(GL_ALL_ATTRIB_BITS);
+			glPushClientAttrib(GL_CLIENT_ALL_ATTRIB_BITS);
+
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_LIGHTING);
+			glDisable(GL_BLEND);
+			glDisable(GL_DEPTH_TEST);
+			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		}
+	}
+
+	//I have no idea why i have to hook it like this, but otherwhise it wont work
+	__declspec(naked) void __fastcall hk_rendermodel()
+	{
+		__asm {
+			pushad
+			pushfd
+
+			push ecx //model string is saved in ECX register
+			call applyChams
+			add esp, 4
+
+			popfd
+			popad
+
+			mov  eax, dword ptr ds : [o_rendermodel]
+			jmp  eax
+		}
+	}
+
+	int __vectorcall hk_isOccluded(float vx, float vy, float cx, float cy, float csize)
+	{
+		o_isOccluded(vx, vy, cx, cy, csize);
+		return 0;
+	}
+
+	void initGameHooks()
+	{
+		void* rendermodel = (void*)memory::ScanModuleForPattern(nullptr, offsets::rendermodelSignature, offsets::renderModuleMask);
+		void* isOccluded = (void*)memory::ScanModuleForPattern(nullptr, offsets::isOccludedSignature, offsets::isOccludedMask);
+
+		MH_STATUS status = MH_CreateHook(rendermodel, &hk_rendermodel, &o_rendermodel);
+		std::cout << "Rendermodel hook status " << status << std::endl;
+
+		status = MH_CreateHook(isOccluded, &hk_isOccluded, reinterpret_cast<LPVOID*>(&o_isOccluded));
+		std::cout << "isOccluded hook status " << status << std::endl;
+
+		//MH_EnableHook(rendermodel);
+		//MH_EnableHook(isOccluded);
+	}
+
 	BOOL WINAPI hk_wglSwapBuffers(HDC hDc)
 	{
 		if (!imgui_initialized)
 		{
 			initImGUI(hDc);
+			initGameHooks();
 			imgui_initialized = true;
 		}
 
@@ -90,17 +149,7 @@ namespace hooks
 		return o_wglSwapBuffers(hDc);
 	}
 
-	GLuint weaponChamsTexture = 0;
-	void makeWeaponChamsTexture()
-	{
-		glGenTextures(1, &weaponChamsTexture);
-		glBindTexture(GL_TEXTURE_2D, weaponChamsTexture);
-		GLubyte pixel[4] = { 0,255,0,255 };
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	}
-
+	
 	void APIENTRY hk_glBindTexture(GLenum target, GLuint texture)
 	{
 		o_glBindTexture(target, texture);
@@ -128,15 +177,27 @@ namespace hooks
 				hash == openGLHelper::sniperTextureHash || hash == openGLHelper::shotgunTextureHash || 
 				hash == openGLHelper::smgTextureHash || hash == openGLHelper::knifeTextureHash || hash == openGLHelper::pistolTextureHash || hash == openGLHelper::grenadeTextureHash)
 			{
-				if (weaponChamsTexture == 0) makeWeaponChamsTexture();
+				if (openGLHelper::weaponChamsTexture == 0) openGLHelper::makeWeaponChamsTexture();
 
-				o_glBindTexture(target, weaponChamsTexture);
+				o_glBindTexture(target, openGLHelper::weaponChamsTexture);
 			}
 		}
 	}
 
 	void APIENTRY hk_glDrawElements(GLenum mode, GLsizei count, GLenum type, const void* indices)
 	{
+		if (applyPlayerChams)
+		{
+
+
+			o_glDrawElements(mode, count, type, indices);
+
+
+			applyPlayerChams = false;
+
+			return;
+		}
+
 		o_glDrawElements(mode, count, type, indices);
 	}
 
@@ -166,6 +227,16 @@ namespace hooks
 			std::cout << "Error when hooking glBindTexture" << std::endl;
 			return;
 		}
+
+		std::cout << "Hooked glBindTexture" << std::endl;
+
+		if (kiero::bind(67, (void**)&o_glDrawElements, hk_glDrawElements) != kiero::Status::Success)
+		{
+			std::cout << "Error when hooking glDrawElements" << std::endl;
+			return;
+		}
+
+		std::cout << "Hooked glDrawElements" << std::endl;
 	}
 
 	int SDLCALL Hooked_SDL_PollEvent(SDL_Event* event)
