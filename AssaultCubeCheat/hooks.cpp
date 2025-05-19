@@ -123,8 +123,8 @@ namespace hooks
 		status = MH_CreateHook(isOccluded, &hk_isOccluded, reinterpret_cast<LPVOID*>(&o_isOccluded));
 		std::cout << "isOccluded hook status " << status << std::endl;
 
-		//MH_EnableHook(rendermodel);
-		//MH_EnableHook(isOccluded);
+		MH_EnableHook(rendermodel);
+		MH_EnableHook(isOccluded);
 	}
 
 	BOOL WINAPI hk_wglSwapBuffers(HDC hDc)
@@ -132,7 +132,7 @@ namespace hooks
 		if (!imgui_initialized)
 		{
 			initImGUI(hDc);
-			initGameHooks();
+			//initGameHooks();
 			imgui_initialized = true;
 		}
 
@@ -229,14 +229,14 @@ namespace hooks
 		}
 
 		std::cout << "Hooked glBindTexture" << std::endl;
-
+		/*
 		if (kiero::bind(67, (void**)&o_glDrawElements, hk_glDrawElements) != kiero::Status::Success)
 		{
 			std::cout << "Error when hooking glDrawElements" << std::endl;
 			return;
 		}
 
-		std::cout << "Hooked glDrawElements" << std::endl;
+		std::cout << "Hooked glDrawElements" << std::endl;**/
 	}
 
 	int SDLCALL Hooked_SDL_PollEvent(SDL_Event* event)
