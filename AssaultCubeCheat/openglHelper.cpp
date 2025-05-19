@@ -44,12 +44,14 @@ namespace openGLHelper
 		return (dx * dx + dy * dy) <= (radius * radius);
 	}
 
-	uint32_t fnv1a_hash32(const void* data, std::size_t len) {
+	uint32_t fnv1a_hash32(const void* data, std::size_t len) 
+	{
 		const uint8_t* bytes = reinterpret_cast<const uint8_t*>(data);
 		uint32_t hash = 2166136261u; // 32-bit FNV offset basis
 		constexpr uint32_t prime = 16777619u; // 32-bit FNV prime
 
-		for (std::size_t i = 0; i < len; ++i) {
+		for (std::size_t i = 0; i < len; ++i) 
+		{
 			hash ^= bytes[i];
 			hash *= prime;
 		}
@@ -94,7 +96,8 @@ namespace openGLHelper
 
 		glBegin(GL_LINE_LOOP);
 
-		for (int i = 0; i < segmentCount; i++) {
+		for (int i = 0; i < segmentCount; i++) 
+		{
 			float theta = 2.0f * 3.1415926f * float(i) / float(segmentCount);
 			float x = radius * cosf(theta);
 			float y = radius * sinf(theta);
@@ -163,12 +166,14 @@ namespace openGLHelper
 		if (healthPercent == 1) healthPercent == 0.99999f;
 
 		GLubyte r, g;
-		if (healthPercent >= 0.5f) {
+		if (healthPercent >= 0.5f) 
+		{
 			float t = (healthPercent - 0.5f) / 0.5f;
 			r = (GLubyte)((1.0f - t) * 255.0f);
 			g = 255;
 		}
-		else {
+		else 
+		{
 			float t = healthPercent / 0.5f;
 			r = 255;
 			g = (GLubyte)(t * 255.0f);
